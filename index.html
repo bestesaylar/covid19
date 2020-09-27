@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid19</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Passion+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+   <div class="container">
+       <h1>Covid 19 App</h1>
+       <h2>Welcome to Covid19, Search for the county fist to see the results</h2>
+       <form id="myForm">
+           <input type="text" id="country" placeholder="country" required>
+           <input type="submit" id="submit" value="Get Data">
+       </form>
+       <div class="results">
+       <div id="confirmed"></div>
+       <div id="recovered"></div>
+       <div id="deaths"></div>
+    </div>
+   </div>
+</body>
+<script>
+    const form=document.getElementById("myForm");
+
+    form.addEventListener('submit',function(e){
+        e.preventDefault();
+
+        var country = document.getElementById("country").value
+        var url="https://api.covid19api.com/total/dayone/country/"+country
+
+        covidData(url)
+    })
+
+    async function covidData(url){
+        let response=await fetch(url)
+        console.log(response)
+        let data =await response.json()
+        console.log(data)
+
+        let length=data.length
+
+        let index=length-1
+
+        let confirmed=document.getElementById("confirmed")
+        let recovered=document.getElementById("recovered")
+        let deaths=document.getElementById("deaths")
+
+        confirmed.innerHTML = ""
+        recovered.innerHTML= ""
+        deaths.innerHTML= ""
+
+        confirmed.append("Total confirmed cases:    "+data[index].Confirmed)
+        recovered.append("Total recovered cases:    "+data[index].Recovered)
+        deaths.append("Total deaths:    "+data[index].Deaths)
+    }
+</script>
+</html>
